@@ -4,6 +4,9 @@ This project was created for the KMITL AgiTech Hackathon 2026, where we designed
 Low-cost cattle herd monitoring for smallholder farms, built on LoRa mesh instead of cellular or commercial LoRaWAN infrastructure.
 
 Commercial livestock monitoring collars (Nofence, Halter, Vence, eShepherd) are priced and shaped for Western ranching. COWLLAR targets the smallholder herd: a handful of cows, no reliable internet at the paddock, and a per-animal budget measured in hundreds of baht rather than thousands.
+![COWLLAR collar prototype](docs/cattle_collar_assembled_top_view.png)
+![COWLLAR collar prototype](docs/cattle_collar_exploded_internals.png)
+![COWLLAR collar prototype](docs/cattle_collar_placement_counterweight.png)
 
 ---
 
@@ -11,13 +14,17 @@ Commercial livestock monitoring collars (Nofence, Halter, Vence, eShepherd) are 
 
 Each cow wears a collar containing an IMU. The collar continuously scores the animal's motion against **its own** baseline and flags deviations that matter to the farmer — estrus, illness, and heavy fly burden — then pushes an alert to LINE.
 
+![COWLLAR collar prototype](docs/meshtastic_herd_architecture_four_tiers.png)
+
 Two things make this work at low cost:
 
 **Anchor / follower topology.** Only a few collars in a herd carry GPS. The rest are follower nodes that locate themselves by LoRa RSSI relative to the anchors. GPS is the expensive part of the bill of materials, so this cuts the per-animal cost substantially while keeping herd-level position awareness.
 
 **Meshtastic backhaul.** Collars form a LoRa mesh. One internet-connected node can serve an entire village; no LoRaWAN gateway subscription, and the system keeps logging and alerting while offline.
+![COWLLAR collar prototype](docs/meshtastic_herd_architecture_four_tiers.png)
 
 **Behavioral scoring.** Raw acceleration magnitude cannot tell estrus apart from a cow shaking off flies — both look like "more movement." COWLLAR decomposes IMU data into three frequency bands (posture below 0.5 Hz, locomotion 0.5–5 Hz, shake/scratch above 5 Hz) and scores the resulting feature vector by Mahalanobis distance from that individual cow's learned baseline. Because the score carries *direction* in feature space and not just magnitude, different anomalies separate from each other rather than collapsing into a single "unusual" flag.
+![COWLLAR collar prototype](docs/deviation_direction_vs_distance.png)
 
 ---
 
@@ -72,6 +79,8 @@ That habituation finding is itself part of what the project learned. Form factor
 ## Roadmap
 
 - **Ear tag tier.** Lightweight follower tags (IMU + RSSI, no GPS, sub-30 g target) as a per-animal option alongside anchor collars. Habituation cost drops toward zero; the tag joins the same Meshtastic architecture.
+![COWLLAR collar prototype](docs/follower_ear_tag_internal_layout.png)
+
 - **Deployment configurations.** Collar-only, or collar-plus-tags, chosen per farm.
 - **On-animal calibration.** Retune activity thresholds and per-cow baselines against real labeled herd data.
 
