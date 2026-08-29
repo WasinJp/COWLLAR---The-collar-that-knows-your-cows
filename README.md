@@ -14,11 +14,10 @@ Commercial livestock monitoring collars (Nofence, Halter, Vence, eShepherd) are 
 
 Each cow wears a collar containing an IMU. The collar continuously scores the animal's motion against **its own** baseline and flags deviations that matter to the farmer — estrus, illness, and heavy fly burden — then pushes an alert to LINE.
 
-![COWLLAR collar prototype](docs/meshtastic_herd_architecture_four_tiers.png)
-
 Two things make this work at low cost:
 
 **Anchor / follower topology.** Only a few collars in a herd carry GPS. The rest are follower nodes that locate themselves by LoRa RSSI relative to the anchors. GPS is the expensive part of the bill of materials, so this cuts the per-animal cost substantially while keeping herd-level position awareness.
+![COWLLAR collar prototype](docs/activity_data_processing_pipeline.png)
 
 **Meshtastic backhaul.** Collars form a LoRa mesh. One internet-connected node can serve an entire village; no LoRaWAN gateway subscription, and the system keeps logging and alerting while offline.
 ![COWLLAR collar prototype](docs/meshtastic_herd_architecture_four_tiers.png)
